@@ -1,0 +1,118 @@
+%%% University of Glasgow thesis template (last updated 2011-05-15)
+%%% Required packages: times, setspace, parskip, titlesec, and geometry (all of these are distributed with texlive/miktex)
+%%% Optional (and recommended) packages: biblatex, csquotes, babel, inputenc, verbatim (all of these are distributed with texlive/miktex)
+%%% For citations in the Chicago Manual of Style (Turabian) format, use biblatex-chicago (also distributed with texlive/miktex)
+%%%
+%%% If you are using Debian, all but biblatex-chicago are packaged in: texlive-latex-base, texlive-latex-recommended, and texlive-latex-extra
+%%%
+%%% USAGE (feel free to copy and uncomment this):
+%%% 	\documentclass[a4paper,12pt]{report} % feel free to use with different document classes
+%%% 	\usepackage{glasgow-thesis} % load this style.
+%%% 	\title{Thesis Title}
+%%% 	\author{James Ross} % your name
+%%% 	\qualifications{M.A, University of Glasgow \\ B.A., University of Glasgow} % your current qualifications, separated by \\ (newline)
+%%% 	\degree{Doctor of Philosophy} % degree for which this thesis is being submitted
+%%% 	\school{Engineering} % school within university
+%%% 	\college{Sciences} % college within university
+%%% 	\date{September 2011} % month and year in which thesis is deposited
+%%% 	\begin{document}
+%%% 		\pagenumbering{roman}
+%%% 		\maketitle
+%%% 		\begin{abstract}
+%%% 			abstract
+%%% 		\end{abstract}
+%%% 		\tableofcontents
+%%% 		\clearpage
+%%% 		\setcounter{page}{0}
+%%% 		\pagenumbering{arabic}
+%%% 		% thesis begins here
+%%% 	\end{document}
+
+\ProvidesPackage{glasgow-thesis}
+
+% necessary packages
+\usepackage{times} % fonts
+\usepackage{setspace} % use \onehalfspacing and \singlespacing
+\usepackage[parfill]{parskip} % paragraph formatting
+\usepackage[raggedright,compact]{titlesec} % for title formats below
+\usepackage[a4paper,hmargin=1.5cm,vmargin=1.8cm,bindingoffset=2.5cm,includehead,includefoot]{geometry} % proper page size
+
+% optional packages -- these are what you will want to uncomment if you use them
+% \usepackage{verbatim} % multi-line comments as \begin{comment}....\end{comment}
+% \usepackage[utf8]{inputenc} % handles non-Latin characters in the text (also recommended by csquote)
+% \usepackage[british]{babel} % used for csquotes and biblatex
+% \usepackage[autostyle]{csquotes} % handles automatic quotation marks (also required for biblatex)
+% \usepackage[notes]{biblatex-chicago} % reference style
+% \usepackage{epigraph} % put in a little quote at the beginning of a chapter
+
+% basic latex options
+\clubpenalty=10000 % general widow/orphan handling
+\widowpenalty=10000 % general widow/orphan handling
+\setlength{\parskip}{1.0\baselineskip} % basic gap between paragraphs = 1 blank line
+\pagestyle{headings} % Adds running headings for page
+
+% necessary options
+\onehalfspacing
+
+% formatting options
+\titleformat{\chapter}[hang]{\vspace{-1.0\baselineskip}\sffamily\bfseries\huge}{\thechapter.}{1ex}{}
+\titleformat{\section}{\titlerule\vspace{-2ex}\large\bfseries\itshape}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\sffamily\bfseries}{\thesubsection}{0.5em}{}
+\titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+
+% spacing options
+\titlespacing*{\section}{0pt}{2.0\baselineskip}{0pt}
+\titlespacing*{\subsection}{0pt}{0\baselineskip}{0\baselineskip}
+\titlespacing*{\paragraph}{0pt}{1.0\baselineskip}{2.0\baselineskip}
+
+% optional package options -- don't forget to uncomment these lines if you are using their package above
+% \DeclareLanguageMapping{british}{cms-american} % forces biblatex-chicago to use cms-american with British English
+% \setlength{\epigraphwidth}{4in} % sets width of epigraph
+% \renewcommand{\mkcitation}[1]{#1} % modifies csquotes so that citations in \textquote and \blockquote are footnotes rather than in-text
+% \renewcommand{\mktextquote}[6]{#1#2#4#5#3#6} % US English
+
+% kludge to make long quotes not have huge vertical spacing within a paragraph
+\renewenvironment{quote}{\vspace{-0.66\baselineskip}\list{}{\rightmargin\leftmargin}\singlespacing\item\relax}{\endlist\vspace{-1.0\baselineskip}}
+
+% title page
+\newcommand{\college}[1]{\renewcommand{\@college}[1]{#1}}
+\newcommand{\school}[1]{\renewcommand{\@school}[1]{#1}}
+\newcommand{\qualifications}[1]{\renewcommand{\@qualifications}[1]{#1}}
+\newcommand{\degree}[1]{\renewcommand{\@degree}[1]{#1}}
+\global\newcommand{\@college}{College}
+\global\newcommand{\@school}{School}
+\global\newcommand{\@qualifications}{M.A., University of Glasgow \\ B.A., University of Glasgow}
+\global\newcommand{\@degree}{Doctor of Philosophy}
+\renewcommand{\maketitle}{
+	\begin{titlepage}
+		\singlespacing
+  		\addtolength{\oddsidemargin}{-0.75cm}
+		\begin{center}
+			\null\vskip 5.0cm
+			\begin{minipage}[t][8.5cm]{11.5cm}
+				\begin{center}
+					{\LARGE\textbf\@title \par}\vfill
+
+					{\Large\textit\@author \par \@qualifications \par}\vfill
+
+					{\Large Submitted in fulfilment of the requirements for \par the degree of \@degree \par}\vfill
+				\end{center}
+			\end{minipage}
+			\null\vskip 4.0cm
+			\Large School of \@school \\
+
+			\Large College of \@college \\
+
+			\Large University of Glasgow \vfill
+
+			\Large \@date \\
+
+		\end{center}
+	\end{titlepage}
+	\if@twoside
+		\thispagestyle{empty}
+		\cleardoublepage
+	\else
+		\addtocounter{page}{1}
+	\fi
+}
